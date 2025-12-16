@@ -1,6 +1,6 @@
 # COMP0212-Group15
 
-This repository contains Python scripts for visualizing and generating analytical space debris trajectories. It includes codes for heatmap plotting, 3D and 2D modeling visualization, and plotting real world data.
+This repository contains Python scripts for visualizing and generating space debris trajectories. It includes codes for heatmap plotting, 3D and 2D modeling visualization, and plotting real world data.
 
 ---
 
