@@ -8,10 +8,10 @@ This repository contains Python scripts for visualizing and generating space deb
 
 This project was developed as part of the **COMP0212 - Modelling and Simulation** (Group 15 - Ted Tang, Muxin Li and Thun Sahacharoen). The scripts provide:
 
-- **Heatmap visualizations** for insights into data distributions.
-- **3D model plotting** for multi-dimensional analysis.
-- **2D model plotting** for multi-dimensional analysis.
-- **Real data plotting** to visualize experimental or real-world results.
+- **Heatmap visualizations** to visualise heatmap of possible impact locations of space debris with Earth.
+- **3D model plotting** for projecting the 3D trajectory of the space debris
+- **2D model plotting** for projecting the 2D trajectory of the space debris
+- **Real data plotting** to visualise real world space debris impact data.
 
 ---
 
