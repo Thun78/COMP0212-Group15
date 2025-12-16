@@ -1,28 +1,27 @@
 # COMP0212-Group15
 
-> 📊 A Python visualization and modeling project developed for COMP0212 Group 15.
-
-This repository contains Python scripts for visualizing data and generating analytical models. It includes routines for heatmap plotting, 3D modeling visualization, and plotting real data results.
+This repository contains Python scripts for visualizing and generating analytical space debris trajectories. It includes codes for heatmap plotting, 3D and 2D modeling visualization, and plotting real world data.
 
 ---
 
 ## 🧠 Project Overview
 
-This project was developed as part of the **COMP0212** course (Group 15). The goal is to demonstrate data visualization and basic modeling techniques using Python. The scripts provide:
+This project was developed as part of the **COMP0212 - Modelling and Simulation** (Group 15 - Ted Tang, Muxin Li and Thun Sahacharoen). The scripts provide:
 
 - **Heatmap visualizations** for insights into data distributions.
 - **3D model plotting** for multi-dimensional analysis.
+- **2D model plotting** for multi-dimensional analysis.
 - **Real data plotting** to visualize experimental or real-world results.
 
 ---
 
 ## 🛠️ Built With
 
-- Python (version 3.7+ recommended)
+- Python
 - `matplotlib`
 - `numpy`
-- `pandas` (if used in your data loading)
-- Any other libraries needed (add here if used, like `seaborn`, `scikit-learn`, etc.)
+- `pandas`
+- `cartopy`
 
 ---
 
