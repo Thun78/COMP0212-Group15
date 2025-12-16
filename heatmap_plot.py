@@ -124,26 +124,36 @@ def run_monte_carlo_simulation(initial_state, run_id):
 
 
 # Initial Condition Generation (GLOBAL + EQUATOR-BIASED)
-def generate_random_initial_conditions(R_min=3e7, R_max=5e7, V_min=1000, V_max=4000,
-                                       equator_bias=0.6,
-                                       inc_equator_deg=40.0):
-    """
-    equator_bias: Probability weight for sampling inclinations within the equatorial band
-                  (-inc_equator_deg ~ +inc_equator_deg)
-    inc_equator_deg: Half-width of the equatorial band in degrees
-    The remaining probability mass is uniformly sampled over the full global range
-    (-90° ~ +90°), ensuring global impact coverage.
-    """
-    R = np.random.uniform(R_min, R_max)
-    theta = np.random.uniform(0, 2 * np.pi)
-    x0 = R * np.cos(theta)
-    y0 = R * np.sin(theta)
+def generate_random_initial_conditions(
+    h_min=160e3, h_max=2000e3,   # altitude range (m)
+    ecc_max=0.05, equator_bias=0.6,
+    inc_equator_deg=40.0                # radial velocity fraction of v_circ
+):
+    # 1) random altitude
+    h = np.random.uniform(h_min, h_max)
+    r = R_EARTH + h
 
-    phi = theta + np.random.uniform(70, 160) * np.pi / 180
-    V = np.random.uniform(V_min, V_max)
+    # 2) random position angle (uniform on circle)
+    theta = np.random.uniform(0.0, 2.0 * np.pi)
 
-    vx0 = V * np.cos(phi)
-    vy0 = V * np.sin(phi)
+    x0 = r * np.cos(theta)
+    y0 = r * np.sin(theta)
+
+    r_hat = np.array([np.cos(theta), np.sin(theta)])
+
+    # 3) unbiased tangential direction (CW or CCW)
+    if np.random.rand() < 0.5:
+        t_hat = np.array([-r_hat[1],  r_hat[0]])  # +90°
+    else:
+        t_hat = np.array([ r_hat[1], -r_hat[0]])  # -90°
+
+    # 4) near-circular speed + small radial component
+    v_circ = np.sqrt(MU / r)
+
+    v_tan = v_circ * np.random.uniform(1.0 - 0.02, 1.0 + 0.02)
+    v_rad = np.random.uniform(-ecc_max, ecc_max) * v_circ
+
+    v_vec = v_tan * t_hat + v_rad * r_hat
 
     # Inclination-weighted sampling: equatorial band vs global distribution
     if np.random.rand() < equator_bias:
@@ -152,7 +162,8 @@ def generate_random_initial_conditions(R_min=3e7, R_max=5e7, V_min=1000, V_max=4
         inc = np.random.uniform(-90.0, 90.0) * np.pi / 180.0
 
     raan = np.random.uniform(0, 2 * np.pi)
-    return [x0, y0, vx0, vy0, inc, raan]
+
+    return [x0, y0, v_vec[0], v_vec[1], inc, raan]
 
 
 # Helper: convert impact points to latitude-longitude
@@ -195,9 +206,7 @@ def impact_points_to_latlon(impact_points):
         lats.append(lat); lons.append(lon)
     return np.array(lats), np.array(lons)
 
-# =========================
 # Plot 1: Longitude-Latitude Scatter (No Base Map)
-# =========================
 def plot_impact_points_only(impact_points, save=False, outfn='impact_points_lonlat.png'):
     if len(impact_points) == 0:
         print(" No impact data")
